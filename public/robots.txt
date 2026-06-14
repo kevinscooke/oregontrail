@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://oregontrail26.netlify.app/sitemap-index.xml

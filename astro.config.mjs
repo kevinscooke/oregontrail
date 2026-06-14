@@ -1,7 +1,8 @@
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
+import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
-  site: "https://oregon-trail-journal.netlify.app",
-  integrations: [mdx()],
+  site: "https://oregontrail26.netlify.app",
+  integrations: [mdx(), sitemap()],
 });

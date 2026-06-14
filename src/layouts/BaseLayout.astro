@@ -10,6 +10,9 @@ interface Props {
 const { title, description = "Following Val and Keith's journey along the historic Oregon Trail — St. Louis to Oregon.", ogImage } = Astro.props;
 const siteTitle = "The Oregon Trail Journal";
 const fullTitle = title === siteTitle ? title : `${title} — ${siteTitle}`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const defaultOgImage = new URL("/images/day-20/IMG_6187.jpeg", Astro.site);
+const ogImageURL = ogImage ? new URL(ogImage, Astro.site) : defaultOgImage;
 ---
 
 <!doctype html>
@@ -17,11 +20,14 @@ const fullTitle = title === siteTitle ? title : `${title} — ${siteTitle}`;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="canonical" href={canonicalURL} />
     <meta name="description" content={description} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
-    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={ogImageURL} />
     <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{fullTitle}</title>
   </head>
