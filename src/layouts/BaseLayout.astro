@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import SiteNav from "../components/SiteNav.astro";
 
 interface Props {
   title: string;
@@ -32,15 +33,7 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site) : defaultOgImage;
     <title>{fullTitle}</title>
   </head>
   <body>
-    <header class="site-header">
-      <a href="/" class="site-logo">
-        The Oregon Trail Journal
-        <span>St. Louis → Oregon · 2026</span>
-      </a>
-      <nav class="site-nav">
-        <a href="/">All Days</a>
-      </nav>
-    </header>
+    <SiteNav />
 
     <slot />
 

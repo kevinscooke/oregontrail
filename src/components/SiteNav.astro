@@ -1,0 +1,38 @@
+---
+const navLinks = [
+  { href: "/", label: "All Days" },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="site-header" id="site-header">
+  <div class="site-header__inner">
+    <a href="/" class="site-logo">
+      The Oregon Trail Journal
+      <span>St. Louis → Oregon · 2026</span>
+    </a>
+    <nav class="site-nav" aria-label="Main navigation">
+      {navLinks.map(({ href, label }) => (
+        <a
+          href={href}
+          class:list={["site-nav__link", { "is-active": currentPath === href }]}
+          aria-current={currentPath === href ? "page" : undefined}
+        >
+          {label}
+        </a>
+      ))}
+    </nav>
+  </div>
+</header>
+
+<script>
+  const header = document.getElementById("site-header");
+  if (header) {
+    const onScroll = () => {
+      header.classList.toggle("is-scrolled", window.scrollY > 8);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+  }
+</script>
