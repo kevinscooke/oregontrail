@@ -1,0 +1,127 @@
+---
+interface Row {
+  pioneer: string;
+  modern: string;
+}
+
+interface Category {
+  label: string;
+  rows: Row[];
+}
+
+interface Props {
+  categories: Category[];
+}
+
+const { categories } = Astro.props;
+---
+
+<div class="comparison-table">
+  <div class="comparison-header">
+    <div class="comparison-col comparison-col--pioneer">
+      <span class="comparison-icon">🐂</span>
+      <span>Pioneer Wagon</span>
+    </div>
+    <div class="comparison-col comparison-col--modern">
+      <span class="comparison-icon">🚐</span>
+      <span>Our Airstream</span>
+    </div>
+  </div>
+
+  {categories.map((cat) => (
+    <div class="comparison-category">
+      <div class="comparison-category-label">{cat.label}</div>
+      {cat.rows.map((row) => (
+        <div class="comparison-row">
+          <div class="comparison-cell comparison-cell--pioneer" set:html={row.pioneer} />
+          <div class="comparison-cell comparison-cell--modern" set:html={row.modern} />
+        </div>
+      ))}
+    </div>
+  ))}
+</div>
+
+<style>
+  .comparison-table {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1.5px solid var(--color-stone);
+    margin: 2rem 0;
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+
+  .comparison-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+
+  .comparison-col {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    font-family: var(--font-ui);
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+  }
+
+  .comparison-col--pioneer {
+    border-right: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .comparison-icon {
+    font-size: 1.2rem;
+  }
+
+  .comparison-category {
+    border-top: 2px solid var(--color-stone);
+  }
+
+  .comparison-category-label {
+    background: var(--color-sage);
+    color: var(--color-ink);
+    font-family: var(--font-ui);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.4rem 1.25rem;
+    opacity: 0.85;
+  }
+
+  .comparison-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-top: 1px solid var(--color-stone);
+  }
+
+  .comparison-row:first-of-type {
+    border-top: none;
+  }
+
+  .comparison-cell {
+    padding: 0.6rem 1.25rem;
+    color: var(--color-ink);
+  }
+
+  .comparison-cell--pioneer {
+    background: #fdf8f0;
+    border-right: 1.5px solid var(--color-stone);
+  }
+
+  .comparison-cell--modern {
+    background: var(--color-paper);
+  }
+
+  .comparison-row:nth-child(even) .comparison-cell--pioneer {
+    background: #f8f2e6;
+  }
+
+  .comparison-row:nth-child(even) .comparison-cell--modern {
+    background: #fdfaf6;
+  }
+</style>

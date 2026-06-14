@@ -1,0 +1,64 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import type { CollectionEntry } from "astro:content";
+import { entrySlug } from "../utils/slug";
+
+interface Props {
+  entry: CollectionEntry<"days">;
+  prev?: CollectionEntry<"days">;
+  next?: CollectionEntry<"days">;
+}
+
+const { entry, prev, next } = Astro.props;
+const { title, day, date, summary, coverImage, location } = entry.data;
+
+const dateStr = date.toLocaleDateString("en-US", {
+  weekday: "long",
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+  timeZone: "UTC",
+});
+---
+
+<BaseLayout
+  title={`Day ${day}: ${title}`}
+  description={summary}
+  ogImage={coverImage}
+>
+  <main class="page-wrapper">
+    <article>
+      <header class="day-header">
+        <div class="day-header__eyebrow">
+          <a href="/">&larr; All Days</a>
+          <span>&bull;</span>
+          <span class="day-badge">Day {day}</span>
+          <span>{dateStr}</span>
+        </div>
+        <h1>{title}</h1>
+        {location && <p class="day-header__location">📍 {location}</p>}
+      </header>
+
+      <div class="prose">
+        <slot />
+      </div>
+
+      <nav class="day-nav" aria-label="Day navigation">
+        {prev ? (
+          <a href={`/days/${entrySlug(prev.id)}`}>
+            &larr; Day {prev.data.day}: {prev.data.title}
+          </a>
+        ) : (
+          <span></span>
+        )}
+        {next ? (
+          <a href={`/days/${entrySlug(next.id)}`}>
+            Day {next.data.day}: {next.data.title} &rarr;
+          </a>
+        ) : (
+          <span></span>
+        )}
+      </nav>
+    </article>
+  </main>
+</BaseLayout>

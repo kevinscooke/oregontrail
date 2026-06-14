@@ -1,0 +1,37 @@
+---
+/**
+ * PhotoGrid renders a responsive grid of images with lightbox support.
+ * Use in markdown via MDX, or wire up in day pages.
+ *
+ * Props:
+ *   images  — array of { src, alt? } objects
+ *   caption — optional caption shown below the grid
+ */
+interface ImageItem {
+  src: string;
+  alt?: string;
+}
+
+interface Props {
+  images: ImageItem[];
+  caption?: string;
+}
+
+const { images, caption } = Astro.props;
+const count = Math.min(images.length, 6);
+const gridClass = `photo-grid photo-grid--${count}`;
+---
+
+<div class={gridClass}>
+  {images.map((img) => (
+    <div class="photo-grid__item">
+      <img
+        src={img.src}
+        alt={img.alt ?? ""}
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+  ))}
+</div>
+{caption && <p class="photo-grid-caption">{caption}</p>}

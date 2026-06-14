@@ -1,0 +1,79 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const { title, description = "Following Val and Keith's journey along the historic Oregon Trail — St. Louis to Oregon.", ogImage } = Astro.props;
+const siteTitle = "The Oregon Trail Journal";
+const fullTitle = title === siteTitle ? title : `${title} — ${siteTitle}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{fullTitle}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a href="/" class="site-logo">
+        The Oregon Trail Journal
+        <span>St. Louis → Oregon · 2026</span>
+      </a>
+      <nav class="site-nav">
+        <a href="/">All Days</a>
+      </nav>
+    </header>
+
+    <slot />
+
+    <footer class="site-footer">
+      <p>Val &amp; Keith's journey along the historic Oregon Trail &mdash; 2026</p>
+    </footer>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+      <button class="lightbox__close" id="lightbox-close" aria-label="Close">&times;</button>
+      <img class="lightbox__img" id="lightbox-img" src="" alt="" />
+    </div>
+
+    <script>
+      const lightbox = document.getElementById("lightbox")!;
+      const lightboxImg = document.getElementById("lightbox-img") as HTMLImageElement;
+      const lightboxClose = document.getElementById("lightbox-close")!;
+
+      document.querySelectorAll(".photo-grid__item img").forEach((img) => {
+        img.addEventListener("click", () => {
+          lightboxImg.src = (img as HTMLImageElement).src;
+          lightboxImg.alt = (img as HTMLImageElement).alt;
+          lightbox.classList.add("is-open");
+          document.body.style.overflow = "hidden";
+        });
+      });
+
+      function closeLightbox() {
+        lightbox.classList.remove("is-open");
+        document.body.style.overflow = "";
+      }
+
+      lightboxClose.addEventListener("click", closeLightbox);
+      lightbox.addEventListener("click", (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeLightbox();
+      });
+    </script>
+  </body>
+</html>

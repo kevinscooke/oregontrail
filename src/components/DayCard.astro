@@ -1,0 +1,42 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { entrySlug } from "../utils/slug";
+
+interface Props {
+  entry: CollectionEntry<"days">;
+}
+
+const { entry } = Astro.props;
+const { title, day, date, summary, coverImage, location } = entry.data;
+
+const dateStr = date.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+  timeZone: "UTC",
+});
+---
+
+<a href={`/days/${entrySlug(entry.id)}`} class="day-card">
+  <div class="day-card__thumb">
+    {coverImage ? (
+      <img src={coverImage} alt={`Day ${day} — ${title}`} loading="lazy" />
+    ) : (
+      <div class="day-card__thumb-placeholder">🌾</div>
+    )}
+  </div>
+  <div class="day-card__body">
+    <div class="day-card__meta">
+      <span class="day-badge">Day {day}</span>
+      <span class="day-card__date">{dateStr}</span>
+    </div>
+    <div class="day-card__title">{title}</div>
+    {location && (
+      <div class="day-card__location">
+        <span aria-hidden="true">📍</span>
+        {location}
+      </div>
+    )}
+    {summary && <p class="day-card__summary">{summary}</p>}
+  </div>
+</a>

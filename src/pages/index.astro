@@ -1,0 +1,27 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import DayCard from "../components/DayCard.astro";
+
+const allDays = await getCollection("days");
+const sorted = allDays.sort((a, b) => b.data.day - a.data.day);
+---
+
+<BaseLayout title="The Oregon Trail Journal">
+  <main class="page-wrapper page-wrapper--wide">
+    <div class="home-hero">
+      <h1>The Oregon Trail Journal</h1>
+      <p>Val &amp; Keith's journey along the historic trail &mdash; St. Louis to Oregon, 2026</p>
+    </div>
+
+    {sorted.length === 0 ? (
+      <p style="text-align:center; color: var(--color-ink-muted); font-family: var(--font-ui);">
+        No entries yet — check back soon!
+      </p>
+    ) : (
+      <div class="day-grid">
+        {sorted.map((entry) => <DayCard entry={entry} />)}
+      </div>
+    )}
+  </main>
+</BaseLayout>
