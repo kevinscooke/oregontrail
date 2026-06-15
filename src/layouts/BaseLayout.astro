@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import SiteNav from "../components/SiteNav.astro";
+import TrailMap from "../components/TrailMap.astro";
 
 interface Props {
   title: string;
@@ -38,7 +39,71 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site) : defaultOgImage;
     <slot />
 
     <footer class="site-footer">
-      <p>Val &amp; Keith's journey along the historic Oregon Trail &mdash; 2026</p>
+
+      <!-- Trail map -->
+      <div class="footer-map-wrap">
+        <TrailMap />
+      </div>
+
+      <!-- Footer columns -->
+      <div class="footer-body">
+        <div class="footer-inner">
+
+          <!-- Community links -->
+          <div class="footer-col">
+            <h4 class="footer-col__heading">Our Community</h4>
+            <ul class="footer-links">
+              <li>
+                <a
+                  href="https://airstreamclub.org/carolinas"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="footer-link"
+                >Carolinas Airstream Club</a>
+              </li>
+              <li>
+                <a
+                  href="https://www.bluecompassrv.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="footer-link"
+                >Blue Compass RV &middot; Greensboro, NC</a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Upcoming event -->
+          <div class="footer-col">
+            <h4 class="footer-col__heading">Upcoming</h4>
+            <div class="footer-event">
+              <svg class="footer-event__wheel" viewBox="0 0 36 36" aria-hidden="true">
+                <circle cx="18" cy="18" r="3.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                <circle cx="18" cy="18" r="15" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                <line x1="18" y1="3" x2="18" y2="33" stroke="currentColor" stroke-width="1"/>
+                <line x1="3"  y1="18" x2="33" y2="18" stroke="currentColor" stroke-width="1"/>
+                <line x1="7.6" y1="7.6" x2="28.4" y2="28.4" stroke="currentColor" stroke-width="1"/>
+                <line x1="28.4" y1="7.6" x2="7.6" y2="28.4" stroke="currentColor" stroke-width="1"/>
+              </svg>
+              <div class="footer-event__content">
+                <div class="footer-event__eyebrow">April 2027</div>
+                <div class="footer-event__title">Wagon Wheel</div>
+                <div class="footer-event__detail">
+                  Edward Franklin House<br />
+                  Carolinas Airstream Club
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- About -->
+          <div class="footer-col footer-col--about">
+            <p>Val &amp; Keith are following the historic Oregon Trail from St.&nbsp;Louis to Oregon in their Airstream &mdash; 2026.</p>
+            <p class="footer-copy">&copy; 2026 Val &amp; Keith</p>
+          </div>
+
+        </div>
+      </div>
+
     </footer>
 
     <!-- Lightbox -->

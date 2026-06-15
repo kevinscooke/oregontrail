@@ -1,0 +1,263 @@
+---
+// Trail waypoints  [lat, lon, label]
+const stops = [
+  [36.07,  -79.79,  "Home — Greensboro, NC",              true,  false],
+  [38.25,  -85.76,  "Mount Vernon, KY",                   false, false],
+  [38.63,  -90.19,  "St. Louis, MO",                      false, false],
+  [39.10,  -94.50,  "Kansas City / Independence, MO",     false, false],
+  [39.36,  -94.91,  "Fort Leavenworth, KS",               false, false],
+  [40.93,  -98.34,  "Grand Island, NE",                   false, false],
+  [40.70,  -99.08,  "Kearney, NE",                        false, false],
+  [41.13,  -100.77, "North Platte, NE",                   false, false],
+  [41.87,  -103.67, "Scotts Bluff, NE",                   false, false],
+  [42.21,  -104.52, "Fort Laramie, WY",                   false, false],
+  [42.87,  -106.31, "Casper, WY",                         false, false],
+  [42.49,  -107.83, "Day 20 — Independence Rock, WY",     false, false],
+  [42.47,  -108.80, "Day 21 — Lander & South Pass, WY",   false, true ],
+] as const;
+
+// FIPS codes for visited states: NC=37, KY=21, MO=29, KS=20, NE=31, WY=56
+const visitedFIPS = [20, 21, 29, 31, 37, 56];
+
+const stopsData   = JSON.stringify(stops.map(([lat, lon, label, isHome, isCurrent]) => ({ lat, lon, label, isHome, isCurrent })));
+const visitedData = JSON.stringify(visitedFIPS);
+---
+
+<div id="footer-trail-map" class="footer-trail-map" aria-label="Map showing Val and Keith's Oregon Trail route"></div>
+
+<script is:inline define:vars={{ stopsData, visitedData }}>
+(function () {
+  const stops       = JSON.parse(stopsData);
+  const visitedFIPS = new Set(JSON.parse(visitedData));
+
+  /* ── load CSS ── */
+  const css = document.createElement("link");
+  css.rel  = "stylesheet";
+  css.href = "https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css";
+  document.head.appendChild(css);
+
+  /* ── sequential script loader ── */
+  function seq(srcs, cb) {
+    if (!srcs.length) return cb();
+    const s = document.createElement("script");
+    s.src    = srcs[0];
+    s.onload = () => seq(srcs.slice(1), cb);
+    document.head.appendChild(s);
+  }
+
+  seq([
+    "https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js",
+    "https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js",
+  ], function() {
+    // Wait until the container has a real height (global.css may still be applying)
+    function waitAndInit(tries) {
+      const el = document.getElementById("footer-trail-map");
+      if (el && el.offsetHeight > 0) { init(el); return; }
+      if (tries > 0) setTimeout(function() { waitAndInit(tries - 1); }, 80);
+    }
+    waitAndInit(20);
+  });
+
+  function init(el) {
+    if (!el) return;
+
+    const map = L.map(el, {
+      scrollWheelZoom: false,
+      zoomControl:     false,
+      attributionControl: true,
+    });
+
+    /* ── CartoDB Positron — clean minimal base ── */
+    L.tileLayer(
+      "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+      {
+        attribution:
+          '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> © <a href="https://carto.com/">CARTO</a>',
+        subdomains: "abcd",
+        maxZoom: 20,
+      }
+    ).addTo(map);
+
+    /* ── fit to trail + Oregon destination ── */
+    const allPts = [
+      ...stops.map((s) => [s.lat, s.lon]),
+      [45.35, -122.61], // Oregon City — destination
+    ];
+    map.fitBounds(allPts, { padding: [28, 42] });
+
+    /* ── US state boundaries + visited highlights via topojson ── */
+    fetch("https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json")
+      .then((r) => r.json())
+      .then((us) => {
+        const geojson = topojson.feature(us, us.objects.states);
+        L.geoJSON(geojson, {
+          style: (feature) => {
+            const id       = Number(feature.id);
+            const isVisited = visitedFIPS.has(id);
+            return {
+              fillColor:   isVisited ? "#c8892a" : "transparent",
+              fillOpacity: isVisited ? 0.22 : 0,
+              color:       isVisited ? "#c8892a" : "#ccc5bb",
+              weight:      isVisited ? 1.5 : 0.5,
+            };
+          },
+        }).addTo(map);
+
+        drawTrail();
+      })
+      .catch(() => drawTrail()); // draw trail even if GeoJSON fails
+
+    function drawTrail() {
+      const coords = stops.map((s) => [s.lat, s.lon]);
+
+      /* traveled line */
+      L.polyline(coords, {
+        color:     "#7a5c3a",
+        weight:    3,
+        dashArray: "9, 5",
+        lineCap:   "round",
+        lineJoin:  "round",
+      }).addTo(map);
+
+      /* future route: WY → South Pass → Boise → The Dalles → Oregon City */
+      L.polyline(
+        [
+          [42.47, -108.80],
+          [42.86, -109.22],
+          [42.86, -112.40],
+          [43.62, -116.22],
+          [45.60, -121.18],
+          [45.35, -122.61],
+        ],
+        { color: "#7a5c3a", weight: 2, dashArray: "4, 10", opacity: 0.28 }
+      ).addTo(map);
+
+      /* intermediate stop dots */
+      stops.slice(1, -1).forEach((s) => {
+        L.circleMarker([s.lat, s.lon], {
+          radius:      5,
+          fillColor:   "#c8892a",
+          color:       "#fff",
+          weight:      1.5,
+          fillOpacity: 1,
+        })
+          .bindTooltip(s.label, { direction: "top", offset: [0, -8] })
+          .addTo(map);
+      });
+
+      /* HOME marker */
+      const home = stops[0];
+      L.marker([home.lat, home.lon], {
+        icon: L.divIcon({
+          className: "",
+          html: '<div class="tm-marker tm-marker--home">⌂</div>',
+          iconSize:   [30, 30],
+          iconAnchor: [15, 15],
+        }),
+      })
+        .bindTooltip(home.label, { direction: "top" })
+        .addTo(map);
+
+      /* current position — pulsing */
+      const cur = stops[stops.length - 1];
+      L.marker([cur.lat, cur.lon], {
+        icon: L.divIcon({
+          className: "",
+          html: '<div class="tm-marker tm-marker--current"><span class="tm-pulse"></span></div>',
+          iconSize:   [30, 30],
+          iconAnchor: [15, 15],
+        }),
+      })
+        .bindTooltip(cur.label, {
+          permanent:  true,
+          direction:  "top",
+          className:  "tm-tooltip",
+        })
+        .addTo(map);
+    }
+  }
+})();
+</script>
+
+<style>
+  .footer-trail-map {
+    height: 380px;
+    width: 100%;
+    background: #f4ede0;
+  }
+
+  @media (max-width: 600px) {
+    .footer-trail-map { height: 260px; }
+  }
+
+  /* Custom markers */
+  :global(.tm-marker) {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,.28);
+  }
+  :global(.tm-marker--home) {
+    background: #7a5c3a;
+    color: #f5efe3;
+    font-size: 15px;
+    border: 2px solid #f5efe3;
+  }
+  :global(.tm-marker--current) {
+    background: #7a5c3a;
+    border: 3px solid #c8892a;
+    position: relative;
+  }
+  :global(.tm-pulse) {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid rgba(200,137,42,.7);
+    animation: tm-pulse 2.6s ease-out infinite;
+  }
+  @keyframes tm-pulse {
+    0%   { transform: scale(1);   opacity: .8; }
+    100% { transform: scale(3.2); opacity: 0;  }
+  }
+
+  /* Tooltip */
+  :global(.tm-tooltip) {
+    background: #3d2a18 !important;
+    border: none !important;
+    border-radius: 4px !important;
+    color: #f0e8dc !important;
+    font-family: 'Source Sans 3', system-ui, sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    padding: 3px 8px !important;
+    white-space: nowrap !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,.35) !important;
+  }
+  :global(.tm-tooltip::before) { border-top-color: #3d2a18 !important; }
+
+  /* Leaflet chrome tweaks */
+  :global(.leaflet-container) {
+    font-family: 'Source Sans 3', system-ui, sans-serif;
+    border-radius: var(--radius-md, 8px) var(--radius-md, 8px) 0 0;
+  }
+  :global(.leaflet-control-attribution) {
+    font-size: 9px !important;
+    background: rgba(244,237,224,.8) !important;
+    color: #9e8e7c !important;
+  }
+  :global(.leaflet-control-attribution a) { color: #7a5c3a !important; }
+  :global(.leaflet-tooltip) {
+    background: rgba(61,42,24,.85);
+    border-color: transparent;
+    color: #f0e8dc;
+    font-size: 11px;
+    font-family: 'Source Sans 3', system-ui, sans-serif;
+    padding: 3px 8px;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.25);
+  }
+  :global(.leaflet-tooltip::before) { border-top-color: rgba(61,42,24,.85); }
+</style>
