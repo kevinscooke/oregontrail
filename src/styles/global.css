@@ -122,6 +122,9 @@ body {
 }
 
 /* Map strip */
+#trail-map {
+  scroll-margin-top: 4.5rem;
+}
 .footer-map-wrap {
   background: #f0e8d8;
   padding: 1.25rem var(--page-pad) 0;
