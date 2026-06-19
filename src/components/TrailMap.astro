@@ -31,7 +31,6 @@ const route = [
   [42.13,  -109.05], // Oregon Buttes, WY
   [42.26,  -109.23], // Parting of the Ways, WY
   [42.04,  -109.50], // Big Sandy Pony Express, WY
-  [41.31,  -110.41], // Simpson's Hollow / Fort Bridger, WY
   [41.95,  -109.72], // Green River ferry, WY
   [41.32,  -110.39], // Fort Bridger, WY
   [41.86,  -110.76], // Fossil Butte / Kemmerer, WY
@@ -176,9 +175,16 @@ const airstreamIconHtml = `<div class="tm-airstream" aria-hidden="true">
       }
     ).addTo(map);
 
-    /* ── fit to trail + Oregon destination ── */
+    /* ── fit to trail; mobile gets a closer view of the current segment ── */
+    const isCompact = window.matchMedia("(max-width: 600px)").matches;
+    const recentStopPts = stops.slice(-5).map((s) => [s.lat, s.lon]);
+    const nextStopPts = upcomingStops.slice(0, 1).map((s) => [s.lat, s.lon]);
     const allPts = [...route, ...futureRoute.slice(1)];
-    map.fitBounds(allPts, { padding: [28, 42] });
+    const initialPts = isCompact ? [...recentStopPts, ...nextStopPts] : allPts;
+    map.fitBounds(initialPts, {
+      padding: isCompact ? [22, 22] : [28, 42],
+      maxZoom: isCompact ? 7 : undefined,
+    });
 
     /* ── US state boundaries + visited highlights via topojson ── */
     fetch("https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json")
@@ -223,7 +229,7 @@ const airstreamIconHtml = `<div class="tm-airstream" aria-hidden="true">
         lineJoin:  "round",
       }).addTo(map);
 
-      /* upcoming route — Lander to Oregon City */
+      /* upcoming route — current camp to Oregon City */
       L.polyline(futureRoute, {
         color:     "#7a5c3a",
         weight:    2,
