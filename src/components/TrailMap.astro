@@ -27,14 +27,21 @@ const route = [
   [42.87,  -106.31], // Casper, WY
   [42.49,  -107.83], // Independence Rock, WY
   [42.47,  -108.80], // Lander & South Pass, WY
+  [42.33,  -108.92], // South Pass Overlook, WY
+  [42.13,  -109.05], // Oregon Buttes, WY
+  [42.26,  -109.23], // Parting of the Ways, WY
+  [42.04,  -109.50], // Big Sandy Pony Express, WY
+  [41.31,  -110.41], // Simpson's Hollow / Fort Bridger, WY
+  [41.95,  -109.72], // Green River ferry, WY
+  [41.32,  -110.39], // Fort Bridger, WY
+  [41.86,  -110.76], // Fossil Butte / Kemmerer, WY
+  [42.65,  -111.60], // Soda Springs, ID
+  [42.62,  -112.01], // Lava Hot Springs, ID
 ] as const;
 
-// Upcoming route — Lander to Oregon City (I-80 / I-84 / Columbia Gorge)
+// Upcoming route — Lava Hot Springs to Oregon City (I-84 / Columbia Gorge)
 const futureRoute = [
-  [42.47,  -108.80], // Lander
-  [42.37,  -108.90], // South Pass
-  [41.59,  -109.20], // Rock Springs, WY
-  [42.65,  -111.60], // Soda Springs, ID
+  [42.62,  -112.01], // Lava Hot Springs, ID
   [42.79,  -112.85], // American Falls, ID
   [42.95,  -115.30], // Glenns Ferry, ID
   [44.77,  -117.83], // Baker City, OR
@@ -46,9 +53,7 @@ const futureRoute = [
 
 // Upcoming labeled stops  [lat, lon, label, isNext]
 const upcomingStops = [
-  [41.59,  -109.20, "Rock Springs, WY",              true ],
-  [42.65,  -111.60, "Soda Springs, ID",              false],
-  [42.79,  -112.85, "American Falls, ID",            false],
+  [42.79,  -112.85, "American Falls, ID",            true ],
   [42.95,  -115.30, "Glenns Ferry, ID",              false],
   [44.77,  -117.83, "Baker City, OR",                false],
   [45.67,  -118.79, "Pendleton, OR",                 false],
@@ -72,11 +77,15 @@ const stops = [
   [42.21,  -104.52, "Fort Laramie, WY",                 false, false,  17],
   [42.87,  -106.31, "Casper, WY",                       false, false,  18],
   [42.49,  -107.83, "Independence Rock, WY",            false, false,  20],
-  [42.47,  -108.80, "Lander & South Pass, WY",          false, true,   21],
+  [42.47,  -108.80, "Lander & South Pass, WY",          false, false,  21],
+  [41.95,  -109.72, "Green River, WY",                  false, false,  22],
+  [41.32,  -110.39, "Fort Bridger, WY",                 false, false,  23],
+  [42.65,  -111.60, "Soda Springs, ID",                 false, false,  24],
+  [42.62,  -112.01, "Lava Hot Springs, ID",             false, true,   25],
 ] as const;
 
-// FIPS codes for visited states: IL=17, IN=18, KS=20, KY=21, MO=29, NE=31, NC=37, TN=47, VA=51, WY=56
-const visitedFIPS = [17, 18, 20, 21, 29, 31, 37, 47, 51, 56];
+// FIPS codes for visited states: ID=16, IL=17, IN=18, KS=20, KY=21, MO=29, NE=31, NC=37, TN=47, VA=51, WY=56
+const visitedFIPS = [16, 17, 18, 20, 21, 29, 31, 37, 47, 51, 56];
 
 const routeData         = JSON.stringify(route);
 const futureRouteData   = JSON.stringify(futureRoute);
