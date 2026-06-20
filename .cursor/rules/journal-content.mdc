@@ -1,0 +1,14 @@
+---
+description: Journal entry metadata and image alt text conventions
+globs: src/content/days/*.mdx
+alwaysApply: false
+---
+
+# Journal Content Conventions
+
+- Keep `summary` useful as a meta description: one concise sentence, generally 140-170 characters when practical.
+- Include the day location in `location`; include recognizable place names in `summary` when they help sharing/search.
+- Use simple, place-aware image alt text based on nearby text: `[subject/action] at/in [location]`.
+- Prefer concrete alts like `Canoes on Chesterfield Reservoir in Idaho` over generic alts like `Another view`, `More displays`, or `IMG_1234`.
+- For signs, markers, museums, and historic sites, name the location or subject: `Fort Bridger entrance sign`, `Oregon Buttes viewed from the trail route`.
+- Do not over-describe decorative details; alt text should explain why the image is in the journal.

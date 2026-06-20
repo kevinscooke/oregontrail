@@ -36,11 +36,12 @@ const route = [
   [41.86,  -110.76], // Fossil Butte / Kemmerer, WY
   [42.65,  -111.60], // Soda Springs, ID
   [42.62,  -112.01], // Lava Hot Springs, ID
+  [42.77,  -111.94], // Chesterfield Reservoir, ID
 ] as const;
 
-// Upcoming route — Lava Hot Springs to Oregon City (I-84 / Columbia Gorge)
+// Upcoming route — Chesterfield Reservoir to Oregon City (I-84 / Columbia Gorge)
 const futureRoute = [
-  [42.62,  -112.01], // Lava Hot Springs, ID
+  [42.77,  -111.94], // Chesterfield Reservoir, ID
   [42.79,  -112.85], // American Falls, ID
   [42.95,  -115.30], // Glenns Ferry, ID
   [44.77,  -117.83], // Baker City, OR
@@ -80,7 +81,8 @@ const stops = [
   [41.95,  -109.72, "Green River, WY",                  false, false,  22],
   [41.32,  -110.39, "Fort Bridger, WY",                 false, false,  23],
   [42.65,  -111.60, "Soda Springs, ID",                 false, false,  24],
-  [42.62,  -112.01, "Lava Hot Springs, ID",             false, true,   25],
+  [42.62,  -112.01, "Lava Hot Springs, ID",             false, false,  25],
+  [42.77,  -111.94, "Chesterfield Reservoir, ID",       false, true,   26],
 ] as const;
 
 // FIPS codes for visited states: ID=16, IL=17, IN=18, KS=20, KY=21, MO=29, NE=31, NC=37, TN=47, VA=51, WY=56
