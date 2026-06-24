@@ -37,13 +37,15 @@ const route = [
   [42.65,  -111.60], // Soda Springs, ID
   [42.62,  -112.01], // Lava Hot Springs, ID
   [42.77,  -111.94], // Chesterfield Reservoir, ID
-] as const;
-
-// Upcoming route — Chesterfield Reservoir to Oregon City (I-84 / Columbia Gorge)
-const futureRoute = [
-  [42.77,  -111.94], // Chesterfield Reservoir, ID
   [42.79,  -112.85], // American Falls, ID
   [42.95,  -115.30], // Glenns Ferry, ID
+  [43.79,  -116.94], // Parma / Fort Boise, ID
+  [44.03,  -116.96], // Vale, OR
+  [44.77,  -117.83], // Baker City, OR
+] as const;
+
+// Upcoming route — Baker City to Oregon City (I-84 / Columbia Gorge)
+const futureRoute = [
   [44.77,  -117.83], // Baker City, OR
   [45.67,  -118.79], // Pendleton, OR
   [45.59,  -121.18], // The Dalles — Columbia Gorge
@@ -53,10 +55,7 @@ const futureRoute = [
 
 // Upcoming labeled stops  [lat, lon, label, isNext]
 const upcomingStops = [
-  [42.79,  -112.85, "American Falls, ID",            true ],
-  [42.95,  -115.30, "Glenns Ferry, ID",              false],
-  [44.77,  -117.83, "Baker City, OR",                false],
-  [45.67,  -118.79, "Pendleton, OR",                 false],
+  [45.67,  -118.79, "Pendleton, OR",                 true ],
   [45.68,  -121.89, "Cascade Locks, OR",             false],
   [45.36,  -122.59, "End of the Oregon Trail",       false],
 ] as const;
@@ -82,11 +81,14 @@ const stops = [
   [41.32,  -110.39, "Fort Bridger, WY",                 false, false,  23],
   [42.65,  -111.60, "Soda Springs, ID",                 false, false,  24],
   [42.62,  -112.01, "Lava Hot Springs, ID",             false, false,  25],
-  [42.77,  -111.94, "Chesterfield Reservoir, ID",       false, true,   26],
+  [42.77,  -111.94, "Chesterfield Reservoir, ID",       false, false,  26],
+  [42.79,  -112.85, "Register Rock, ID",                false, false,  27],
+  [42.95,  -115.30, "Glenns Ferry, ID",                 false, false,  28],
+  [44.77,  -117.83, "Baker City, OR",                   false, true,   29],
 ] as const;
 
-// FIPS codes for visited states: ID=16, IL=17, IN=18, KS=20, KY=21, MO=29, NE=31, NC=37, TN=47, VA=51, WY=56
-const visitedFIPS = [16, 17, 18, 20, 21, 29, 31, 37, 47, 51, 56];
+// FIPS codes for visited states: ID=16, IL=17, IN=18, KS=20, KY=21, MO=29, NE=31, NC=37, OR=41, TN=47, VA=51, WY=56
+const visitedFIPS = [16, 17, 18, 20, 21, 29, 31, 37, 41, 47, 51, 56];
 
 const routeData         = JSON.stringify(route);
 const futureRouteData   = JSON.stringify(futureRoute);
