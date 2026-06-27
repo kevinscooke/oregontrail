@@ -42,11 +42,13 @@ const route = [
   [43.79,  -116.94], // Parma / Fort Boise, ID
   [44.03,  -116.96], // Vale, OR
   [44.77,  -117.83], // Baker City, OR
+  [45.67,  -118.79], // Pendleton, OR
+  [46.04,  -118.46], // Whitman Mission, WA
+  [45.67,  -118.79], // Pendleton, OR
 ] as const;
 
-// Upcoming route — Baker City to Oregon City (I-84 / Columbia Gorge)
+// Upcoming route — Pendleton to Oregon City (I-84 / Columbia Gorge)
 const futureRoute = [
-  [44.77,  -117.83], // Baker City, OR
   [45.67,  -118.79], // Pendleton, OR
   [45.59,  -121.18], // The Dalles — Columbia Gorge
   [45.68,  -121.89], // Cascade Locks, OR
@@ -55,8 +57,7 @@ const futureRoute = [
 
 // Upcoming labeled stops  [lat, lon, label, isNext]
 const upcomingStops = [
-  [45.67,  -118.79, "Pendleton, OR",                 true ],
-  [45.68,  -121.89, "Cascade Locks, OR",             false],
+  [45.68,  -121.89, "Cascade Locks, OR",             true ],
   [45.36,  -122.59, "End of the Oregon Trail",       false],
 ] as const;
 
@@ -84,11 +85,14 @@ const stops = [
   [42.77,  -111.94, "Chesterfield Reservoir, ID",       false, false,  26],
   [42.79,  -112.85, "Register Rock, ID",                false, false,  27],
   [42.95,  -115.30, "Glenns Ferry, ID",                 false, false,  28],
-  [44.77,  -117.83, "Baker City, OR",                   false, true,   29],
+  [44.77,  -117.83, "Baker City, OR",                   false, false,  30],
+  [45.67,  -118.79, "Pendleton, OR",                    false, false,  31],
+  [46.04,  -118.46, "Whitman Mission, WA",              false, false,  32],
+  [45.67,  -118.79, "Pendleton, OR",                    false, true,   33],
 ] as const;
 
-// FIPS codes for visited states: ID=16, IL=17, IN=18, KS=20, KY=21, MO=29, NE=31, NC=37, OR=41, TN=47, VA=51, WY=56
-const visitedFIPS = [16, 17, 18, 20, 21, 29, 31, 37, 41, 47, 51, 56];
+// FIPS codes for visited states: ID=16, IL=17, IN=18, KS=20, KY=21, MO=29, NE=31, NC=37, OR=41, TN=47, VA=51, WA=53, WY=56
+const visitedFIPS = [16, 17, 18, 20, 21, 29, 31, 37, 41, 47, 51, 53, 56];
 
 const routeData         = JSON.stringify(route);
 const futureRouteData   = JSON.stringify(futureRoute);
