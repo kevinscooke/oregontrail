@@ -22,6 +22,15 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site) : defaultOgImage;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Google tag (gtag.js) -->
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-J12MCNYBF6"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-J12MCNYBF6');
+    </script>
     <link rel="canonical" href={canonicalURL} />
     <meta name="description" content={description} />
     <meta property="og:title" content={fullTitle} />
