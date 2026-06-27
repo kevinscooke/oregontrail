@@ -6,52 +6,94 @@ const route = [
   [36.95,  -81.09], // Wytheville — I-77 / I-81 junction
   [36.53,  -82.33], // Blountville, TN
   [36.61,  -83.71], // Middlesboro, KY
+  [36.95,  -84.10], // shape: Cumberland Gap / US-25E corridor
   [37.35,  -84.34], // Mount Vernon, KY
   [38.05,  -84.50], // Lexington area — I-75 north
   [38.25,  -85.76], // Louisville — I-64 west
   [38.10,  -86.90], // Southern Indiana — I-64
+  [37.97,  -87.57], // shape: Evansville bend
+  [38.32,  -88.91], // shape: southern Illinois corridor
   [38.62,  -90.15], // East St. Louis, IL
   [38.63,  -90.19], // St. Louis, MO
+  [38.79,  -91.44], // shape: I-70 west of St. Louis
+  [38.95,  -92.33], // shape: Columbia, MO
+  [39.04,  -93.72], // shape: west-central Missouri
   [39.10,  -94.58], // Independence / Kansas City, MO
   [39.36,  -94.91], // Fort Leavenworth, KS
   [39.77,  -94.85], // St. Joseph, MO
+  [39.84,  -96.65], // shape: Marysville / Pony Express corridor
   [40.27,  -96.75], // Beatrice, NE
+  [40.14,  -97.18], // shape: Fairbury, NE
+  [40.53,  -97.60], // shape: Geneva, NE
   [40.87,  -97.59], // York, NE
   [40.93,  -98.34], // Grand Island, NE
   [40.70,  -99.08], // Kearney, NE
+  [40.78,  -99.74], // shape: Platte River / I-80 corridor
   [41.13,  -100.77], // North Platte, NE
+  [41.13,  -101.72], // shape: Ogallala, NE
   [41.30,  -102.12], // Ash Hollow / Lake McConaughy, NE
+  [41.67,  -103.10], // shape: Bridgeport, NE
   [41.44,  -103.66], // Chimney Rock / Gering, NE
   [41.87,  -103.67], // Scotts Bluff, NE
+  [42.05,  -104.18], // shape: US-26 toward Wyoming
   [42.21,  -104.52], // Fort Laramie, WY
+  [42.05,  -104.95], // shape: Wheatland, WY
+  [42.76,  -105.38], // shape: Douglas, WY
   [42.87,  -106.31], // Casper, WY
+  [42.56,  -106.72], // shape: Alcova, WY
+  [42.36,  -107.45], // shape: Muddy Gap, WY
   [42.49,  -107.83], // Independence Rock, WY
+  [42.50,  -108.25], // shape: Split Rock corridor
   [42.47,  -108.80], // Lander & South Pass, WY
   [42.33,  -108.92], // South Pass Overlook, WY
   [42.13,  -109.05], // Oregon Buttes, WY
   [42.26,  -109.23], // Parting of the Ways, WY
   [42.04,  -109.50], // Big Sandy Pony Express, WY
   [41.95,  -109.72], // Green River ferry, WY
+  [41.58,  -109.91], // shape: southwest Wyoming
   [41.32,  -110.39], // Fort Bridger, WY
+  [41.27,  -110.96], // shape: Evanston, WY
   [41.86,  -110.76], // Fossil Butte / Kemmerer, WY
+  [42.32,  -111.30], // shape: Bear Lake / Montpelier corridor
   [42.65,  -111.60], // Soda Springs, ID
   [42.62,  -112.01], // Lava Hot Springs, ID
   [42.77,  -111.94], // Chesterfield Reservoir, ID
+  [42.65,  -112.19], // shape: McCammon, ID
   [42.79,  -112.85], // American Falls, ID
+  [43.03,  -112.44], // shape: Fort Hall, ID
+  [43.19,  -112.35], // shape: Blackfoot, ID
+  [43.38,  -112.13], // shape: Shelley, ID
+  [43.03,  -112.44], // shape: back toward I-86
+  [42.79,  -112.85], // shape: Register Rock / Massacre Rocks
+  [42.56,  -114.46], // shape: Twin Falls corridor
+  [42.93,  -114.95], // shape: Bliss, ID
   [42.95,  -115.30], // Glenns Ferry, ID
+  [43.62,  -116.20], // shape: Boise, ID
+  [43.66,  -116.69], // shape: Caldwell, ID
   [43.79,  -116.94], // Parma / Fort Boise, ID
   [44.03,  -116.96], // Vale, OR
+  [44.35,  -117.27], // shape: Huntington, OR
   [44.77,  -117.83], // Baker City, OR
+  [44.74,  -118.20], // shape: Sumpter forest route
+  [44.42,  -118.95], // shape: John Day / Kam Wah Chung
+  [45.13,  -118.93], // shape: Ukiah, OR
+  [45.48,  -118.83], // shape: Pilot Rock, OR
   [45.67,  -118.79], // Pendleton, OR
+  [45.85,  -118.50], // shape: Milton-Freewater corridor
   [46.04,  -118.46], // Whitman Mission, WA
+  [45.85,  -118.50], // shape: return toward Pendleton
   [45.67,  -118.79], // Pendleton, OR
 ] as const;
 
 // Upcoming route — Pendleton to Oregon City (I-84 / Columbia Gorge)
 const futureRoute = [
   [45.67,  -118.79], // Pendleton, OR
+  [45.84,  -119.70], // shape: Boardman, OR
+  [45.72,  -120.21], // shape: Columbia River / I-84
   [45.59,  -121.18], // The Dalles — Columbia Gorge
+  [45.71,  -121.51], // shape: Hood River, OR
   [45.68,  -121.89], // Cascade Locks, OR
+  [45.54,  -122.39], // shape: Portland metro approach
   [45.36,  -122.59], // End of the Oregon Trail — Oregon City
 ] as const;
 
@@ -171,6 +213,7 @@ const airstreamIconHtml = `<div class="tm-airstream" aria-hidden="true">
       zoomControl:     false,
       attributionControl: true,
     });
+    map.attributionControl.setPrefix(false);
 
     /* ── CartoDB Positron — clean minimal base ── */
     L.tileLayer(
